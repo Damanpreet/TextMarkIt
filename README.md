@@ -1,2 +1,3 @@
-# TextMarkIt
-An application to mark the text in a pdf and find text similar to the marked text.
+An application to search a pdf document for the paragraphs that are relevant to a user. A user can add some text as favorite if it is relevant to them. The application suggests the text similar to the text that user likes to read (highlighted as favorite). The irrelevant information will be collapsed, showing only the top line of the irrelevant text. The user can read the irrelevant text too by expanding it. This allows the user to go through a large document skipping through the text that is not relevant to them.
+
+The application also assigns tags to each paragraph in the pdf. The users can use the predefined tags, or optionally create new tags. 
