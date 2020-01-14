@@ -1,0 +1,15 @@
+To run the flask app:
+
+Unix system
+export FLASK_APP=main.py
+flask run
+
+Windows system
+set FLASK_APP=main.py
+flask run
+
+Debug mode
+set FLASK_ENV=development
+
+pip install flask
+pip install python-dotenv
