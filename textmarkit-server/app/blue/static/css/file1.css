@@ -1,0 +1,21 @@
+.button-para{
+  /* background: none;
+  border: none;
+  outline: none;
+  cursor: crosshair; */
+  /* display: block; */
+  text-indent:1em;  
+  text-align:left;
+}
+
+.body-container-wrapper1 {
+  flex: 0 1 inherit;
+}
+
+.body-container-wrapper1 .page-align1 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  height: calc(100vh - 170px);
+}

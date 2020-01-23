@@ -1,0 +1,85 @@
+<!--
+	Template from https://colorlib.com/wp/bootstrap-file-uploads/
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Home</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
+	<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+	<!-- <script type="text/javascript" src="jquery-3.3.1.js"></script> -->
+	<!-- <script src="jquery-3.4.1.min.js"></script> -->
+</head>
+
+<body>
+
+	<div class="header-container-wrapper">
+		<div class="header-container">
+		  <div class="custom-header-bg">
+			<div class="page-center">
+			  <div class="logo">TextMarkIt</div>
+			  	<div class="navigation">
+				<ul>
+				  <li><a href="" class="button click-tutorial" id="click-tutorial"><i class="fa fa-cloud-upload" aria-hidden="true"></i>Tutorial</a></li>
+				  <li><a href="/contact" class="button open-contact"><i class="material-icons" aria-hidden="true">mail_outline</i>Contact</a></li> 
+				  <!-- <li><a href="#" class="button open-contact"><i class="fa fa-tasks" aria-hidden="true"></i>Contact</a></li> -->
+				</ul>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	  
+	  <div class="body-container-wrapper">
+		<div class="body-container">
+		  <div class="page-center">
+			<div class="upload	">
+				<div class="upload-files">
+					<header>
+					<p>
+					<!-- <i class="fa fa-cloud-upload" aria-hidden="true"></i> -->
+					<h1>Upload a file</h1>
+					Disclaimer: Please upload only the digital pdf or text file. 
+					<br/> Scanned pdf file will not return any output. 
+					</p>
+					</header>
+					<div class="fa-3x icon">
+						<i class="fas fa-file-alt hero" data-fa-transform="shrink-3 down-2 left-6 rotate--45" style="position:relative; transform:rotate(-45deg); display: inline-block; -webkit-transform: rotate(-45deg); -moz-transform: rotate(-45deg); -ms-transform:rotate(-45deg); padding-right: .2em;"></i>
+						<i class="fas fa-file-pdf" data-fa-transform="shrink-3 down-2 right-6 rotate-45" style="position:relative; transform:rotate(45deg); display: inline-block; -webkit-transform: rotate(45deg); -moz-transform: rotate(45deg); -ms-transform:rotate(45deg); padding-left: .2em;"></i>
+					</div>
+					<form action="/api/read_file" method="POST" enctype="multipart/form-data">
+						<input type="file" name="file">
+						<input type="submit">
+					</form>
+					<!-- <form id="upload_form" action = "/api/read_file" method="POST" enctype="multipart/form-data">		
+						<div class="body" id="drop">
+							<p class="pointer-none"><b>Drag and drop</b> files here <br /> or <input type="file" class="custom-file-input" id="fileElem" style="display: None;" name="file"/> <label class="custom-file-label" for="fileElem" style="color:#800080"> browse </label> to begin the upload</p>
+							<output id="file-upload-filename">No files chosen...</output>
+							<input type = "submit" value="Upload" name="upload_submit"/>
+						</div>
+					</form> -->
+				</div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	  
+	  <div class="footer-container-wrapper">
+		<div class="footer-container">
+		  <div class="custom-footer-bg">
+			<div class="page-center">
+			  <p>@Copyright 2020</p>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	  
+</body>
+<script src="{{ url_for('static', filename='js/index6.js') }}"></script> 
+</html>

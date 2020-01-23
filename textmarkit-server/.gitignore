@@ -3,3 +3,4 @@
 *.pc 
 __pycache__ 
 /textmarkit-server/app/utils/data/ 
+/textmarkit-server/app/utils/data/ 

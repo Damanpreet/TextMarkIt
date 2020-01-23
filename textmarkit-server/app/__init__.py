@@ -1,7 +1,7 @@
-from flask import Flask
-# from flask import render_template
-app = Flask(__name__)
-from app import routes
+from app.blue import app
 
+app.secret_key = 'super secret key'
+app.config['SESSION_TYPE'] = 'filesystem'
 
-
+if __name__ == "__main__":
+	app.run(debug=True)

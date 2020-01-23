@@ -34,7 +34,8 @@ def remove_stopwords(text):
         Output: text without stop words.
     '''
     stopwords_set = set(stopwords.words('english'))
-    filtered_text = " ".join([w for w in text if w not in stopwords_set])
+    filtered_text = [w for w in text if w not in stopwords_set]
+    # filtered_text = " ".join([w for w in text if w not in stopwords_set])
     return filtered_text
 
 def lemmatize_text(text):
@@ -57,6 +58,28 @@ def stemming_text(text):
     stem_text = " ".join([stemmer.stem(w) for w in text])
     return stem_text
 
+def preprocess_data_combine(text):
+    '''
+        Function to preprocess the data. Slightly faster than preprocess_text.
+
+        1. Tokenize the text
+        2. Remove punctuations
+        3. Change to lower case
+        4. Remove stop words
+        5. Lemmatization  
+        6. Stemming
+
+        Input - raw (unprocessed) text
+        Output - Preprocessed/Filtered text
+    '''
+    text = preprocess_text1(text)
+    stopwords_set = set(stopwords.words('english'))
+    lemmatizer = WordNetLemmatizer()
+    stemmer = PorterStemmer()
+
+    filtered_text = ' '.join([num2words(stemmer.stem(lemmatizer.lemmatize(w))) if w.isdigit() else stemmer.stem(lemmatizer.lemmatize(w)) for w in text.split() if w not in stopwords_set])
+    return filtered_text    
+
 def preprocess_text(text):
     '''
         Function to preprocess the data.
@@ -73,8 +96,13 @@ def preprocess_text(text):
     text = preprocess_text1(text)
     text = remove_stopwords(text)
     # if uncommenting the below, be careful to modify stemming_text function.
-    # text = lemmatize_text(text)
-    # text = stemming_text(text)
-    
+    text = lemmatize_text(text)
+    text = stemming_text(text)
     print(text)
     return text
+
+def convert_num2words(text):
+    from num2words import num2words
+    return " ".join([num2words(w) if w.isdigit() else w for w in text.split()])
+
+    
