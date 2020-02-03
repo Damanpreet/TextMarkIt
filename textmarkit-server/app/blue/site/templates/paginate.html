@@ -1,0 +1,65 @@
+<!-- “Child Template” -->
+{% extends "base.html" %}
+
+{% block title %} 
+    "View File"
+{% endblock %}
+
+{% block head %} 
+    <meta charset="utf-8">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}"> -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/paginate.css') }}">
+    <!-- <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script> -->
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+{% endblock %}
+
+{% block body %}
+        <span>
+            {% for textdata in my_data['text'] %}                    
+                <div class="div-block">
+                    <input type="button" class="collapsible" id="collapse-{{ loop.index }}" onClick="collapse_elem(this.id)" value="-">
+                    <span class="button-para" id="button-{{ loop.index }}" ondblClick="reply_click(this.id)">{{ textdata['text'] | safe }}</span>
+                </div>
+                <br> 
+            {% endfor %}
+        </span>
+        <br>
+{% endblock %}
+
+{% block controls %}
+    <!-- Add previous and next button. -->
+    <div class="buttons">
+        <div style="float: left; width: 170px">            
+            {% if 'total' in prevresult and prevresult['total']>0 %}
+                <form id="prevform" action="/api/paginate" method="POST" enctype="multipart/form-data">
+                    <input type="text" value={{pageno-1}} name="pageno" hidden/>
+                    <input type="submit" name="prev" value="Previous Page">
+                    <input value="{{ my_data }}" name="nextresult" hidden/>
+                    <input value="{{ prevresult }}" name="currresult" hidden/>
+                </form>
+            {% else %}
+                <input type="button" class="control" id="prev" value="Previous Page" disabled>
+            {% endif %}
+        </div>
+
+        <div style="float: right; width: 170px">
+            {% if 'total' in nextresult and nextresult['total']>0 %}
+                <form id="nextform" action="/api/paginate" method="POST" enctype="multipart/form-data">
+                    <input type="text" value={{pageno+1}} name="pageno" hidden/>
+                    <input value="{{ my_data }}" name="prevresult" hidden/>
+                    <input value="{{ nextresult }}" name="currresult" hidden/>
+                    <input type="submit" name="next" value="Next Page">
+                </form>
+            {% else %}
+                <input type="button" class="control" id="next" value="Next Page" disabled>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{{ url_for('static', filename='js/paginate.js') }}"></script> 
+{% endblock %}

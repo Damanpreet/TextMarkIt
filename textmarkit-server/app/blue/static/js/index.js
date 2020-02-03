@@ -9,13 +9,12 @@ $('#upload_form').submit(function(event){
   fname = document.getElementById('file-upload-filename').innerText;
   // if (extensions.includes(fname.split('.').pop())){
   if (extensions.includes(fname.substr(fname.lastIndexOf('.') + 1))){
-    console.log("cool!")
+    console.log("cool! correct file.");
+    $('#loading-image').show();
   }
   else{
     validated = false;
     alert("Please upload pdf/txt file");
-    // document.getElementById('file-upload-filename').innerText = "Please upload pdf/txt file";
-      // Or some div with image showing
   }
   if (validated != true) {
       event.preventDefault();
@@ -24,10 +23,8 @@ $('#upload_form').submit(function(event){
 
 $('#fileElem').on('change',function(){
   var fileName = $(this).val();
-  // fileName = fileName.split('\\');
   var ext = fileName.substr(fileName.lastIndexOf('.') + 1);
-  // var fname = fileName[fileName.length-1];
-  // if (extensions.includes(fname.split('.').pop())){
+  
   if (extensions.includes(ext)){
     document.getElementById('file-upload-filename').innerText = fileName;//.split('\\').pop().split('/').pop();
   }
@@ -35,4 +32,3 @@ $('#fileElem').on('change',function(){
     document.getElementById('file-upload-filename').innerText = "Please upload pdf/txt file";
   }
 });
-
