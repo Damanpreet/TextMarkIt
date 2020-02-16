@@ -10,7 +10,7 @@ import nltk
 # nltk.download('stopwords') # to remove stopwords
 # nltk.download('wordnet') # to lemmatize text
 from nltk.corpus import stopwords
-from nltk.tokenize import RegexpTokenizer
+from nltk.tokenize import RegexpTokenizer, word_tokenize
 from nltk.stem import WordNetLemmatizer
 from nltk.stem.porter import PorterStemmer
 
@@ -20,8 +20,6 @@ def preprocess_text1(text):
     '''
     tokenizer = RegexpTokenizer(r'\w+')
     tokenized_sentence = tokenizer.tokenize(text.lower())
-    # print("text: ", text)
-    # print("********************")
     # print("tokenized sentence: ", tokenized_sentence)
     return tokenized_sentence
     
@@ -98,7 +96,6 @@ def preprocess_text(text):
     # if uncommenting the below, be careful to modify stemming_text function.
     text = lemmatize_text(text)
     text = stemming_text(text)
-    print(text)
     return text
 
 def convert_num2words(text):

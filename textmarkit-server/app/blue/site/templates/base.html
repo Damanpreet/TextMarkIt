@@ -10,25 +10,27 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
 </head>
 
-<body>
+<body {% block bodyfunction %}{% endblock %}>
     <div class="header-container-wrapper">
 		<div class="header-container">
 		  <div class="custom-header-bg">
 			<div class="page-center">
 			  <div class="logo">TextMarkIt</div>
 			  	<div class="navigation">
-				<ul>
-				  <li><a href="/404" class="button click-tutorial" id="click-tutorial"><i class="fas fa-book-open" aria-hidden="true"></i>Tutorial</a></li>
-				  <li><a href="/contact" class="button open-contact">
-					<i class="fa fa-envelope" aria-hidden="true"></i>Contact</a></li> 
-					<!-- <i class="material-icons" aria-hidden="true">mail_outline</i>Contact</a></li>  -->
-				</ul>
+					<ul>
+						<li><a href="/tutorial" class="button click-tutorial" id="click-tutorial"><i class="fas fa-book-open" aria-hidden="true"></i>Tutorial</a></li>
+						<li><a href="/contact" class="button open-contact">
+						<i class="fa fa-envelope" aria-hidden="true"></i>Contact</a></li> 
+						<!-- <i class="material-icons" aria-hidden="true">mail_outline</i>Contact</a></li>  -->
+					</ul>
 			  </div>
 			</div>
 		  </div>
 		</div>
-    </div>
-    {% block body %}{% endblock %}
+		{% block bodyheader %}{% endblock %}
+	</div>
+	{% block body %}{% endblock %}
+	{% block controls %}{% endblock %}
 </body>
 {% block script %} {% endblock %}
 </html>

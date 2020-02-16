@@ -1,0 +1,87 @@
+<!-- “Child Template” -->
+{% extends "base.html" %}
+
+{% block title %} 
+    "View File"
+{% endblock %}
+
+{% block head %} 
+    <meta charset="utf-8">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}"> -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/paginate.css') }}">
+    <!-- <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script> -->
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+{% endblock %}
+
+{% block body %}
+        <span>
+            {% for data in my_data %}
+                {% for textdata in data['text'] %}                    
+                    <div class="div-block">
+                        <input type="button" class="collapsible" id="collapse-{{ loop.index }}" onClick="collapse_elem(this.id)" value="-">
+                        <span class="button-para" id="button-{{ loop.index }}" ondblClick="reply_click(this.id)">{{ textdata['text'] | safe }}</span>
+                    </div>
+                    <br>                
+                {% endfor %}
+            {% endfor %}
+        </span>
+        <br>
+{% endblock %}
+
+{% block controls %}
+    <!-- Add previous and next button. -->
+    <div class="buttons">
+        <div style="float: left; width: 170px">
+            {% set prevFlag = [] %}
+            {% if prevresult and prevresult is defined %}
+                {% for data in prevresult %}
+                    {% if data['total'] %}
+                        <form id="prevform" action="/api/paginate" method="POST" enctype="multipart/form-data">
+                            <input type="text" value={{pageno-1}} name="pageno" hidden/>
+                            <input type="submit" name="prev" value="Previous Page">
+                            <input value={{currresult}} name="prevresult" hidden/>
+                            <input value={{nextresult}} name="currresult" hidden/>
+                        </form>
+                        {% if prevFlag.append(True) %}{% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            
+            {% if not prevFlag %}
+                <input type="button" class="control" id="prev" value="Previous Page" disabled>
+            {% endif %}
+        </div>
+
+        <div style="float: right; width: 170px">
+            {% set nextres = {'total': False} %}
+            {% if nextresult and nextresult is defined %}
+                {% for data in nextresult %}
+                    {% if data['total'] %}
+                        <form id="nextform" action="/api/paginate" method="POST" enctype="multipart/form-data">
+                            <input type="text" value={{pageno+1}} name="pageno" hidden/>
+                            <input value={{prevresult}} name="currresult" hidden/>
+                            <input value={{currresult}} name="nextresult" hidden/>
+                            <input type="submit" name="next" value="Next Page">
+                        </form>
+                        {% if nextres.update({'total': True}) %}{% endif %}
+                    {% endif %}
+                    {% if data['text'] %}
+                        {% if nextres.update({'text': data['text'] }) %} {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            {{ nextres }}
+            {% if not nextres.total %}
+                <input type="button" class="control" id="next" value="Next Page" disabled>
+            {% endif %}
+            
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{{ url_for('static', filename='js/paginate.js') }}"></script> 
+{% endblock %}

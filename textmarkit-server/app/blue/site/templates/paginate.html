@@ -16,41 +16,58 @@
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 {% endblock %}
 
+{% block bodyheader %}
+    <span id="blink" class="blinking" style="display: none;"> Loading suggestions. </span>
+{% endblock %}
+
+{% block bodyfunction %}
+    onload = "loadSuggestions('{{identifier}}', {{pageno}})"
+{% endblock %}
+
 {% block body %}
-        <span>
-            {% for textdata in my_data['text'] %}                    
-                <div class="div-block">
+    <span>
+        {% for textdata in my_data['text'] %}                    
+            <div class="div-block">
+                {% set data = textdata['text'].split('-') %}
+                {% if 'h2' in data %}
+                    <h2 style="text-align: center"> {{ data[1:]|join('-') }} </h2>
+                {% elif 'h1' in data %}
+                    <h1 style="text-align: center"> {{ data[1:]|join('-') }} </h1>
+                {% else %}
                     <input type="button" class="collapsible" id="collapse-{{ loop.index }}" onClick="collapse_elem(this.id)" value="-">
-                    <span class="button-para" id="button-{{ loop.index }}" ondblClick="reply_click(this.id)">{{ textdata['text'] | safe }}</span>
-                </div>
-                <br> 
-            {% endfor %}
-        </span>
-        <br>
+                    <span class="button-para" id="button-{{ loop.index }}" ondblClick="reply_click(this.id, {{pageno}})">{{ textdata['text'] | safe }}</span>
+                {% endif %}
+            </div>
+            <br> 
+        {% endfor %}
+    </span>
+    <br>
 {% endblock %}
 
 {% block controls %}
     <!-- Add previous and next button. -->
     <div class="buttons">
-        <div style="float: left; width: 170px">            
+        <div style="float: left; width: 170px; margin: 0px 0px 20px 100px;">            
             {% if 'total' in prevresult and prevresult['total']>0 %}
-                <form id="prevform" action="/api/paginate" method="POST" enctype="multipart/form-data">
+                <form id="prevform" action="/api/paginate" method="POST" enctype="multipart/form-data" onClick="loadSuggestions('prev', {{pageno-1}})">
                     <input type="text" value={{pageno-1}} name="pageno" hidden/>
                     <input type="submit" name="prev" value="Previous Page">
                     <input value="{{ my_data }}" name="nextresult" hidden/>
                     <input value="{{ prevresult }}" name="currresult" hidden/>
+                    <input value="prev" name="identifier" hidden/>
                 </form>
             {% else %}
                 <input type="button" class="control" id="prev" value="Previous Page" disabled>
             {% endif %}
         </div>
-
-        <div style="float: right; width: 170px">
+        <p style="text-align:center; width: 60%; display: inline-block; margin: 0px 0px 20px 0px">{{pageno}}</p>
+        <div style="float: right; width: 170px; margin: 0px 40px 20px 0px;">
             {% if 'total' in nextresult and nextresult['total']>0 %}
-                <form id="nextform" action="/api/paginate" method="POST" enctype="multipart/form-data">
+                <form id="nextform" action="/api/paginate" method="POST" enctype="multipart/form-data" onClick="loadSuggestions('next', {{pageno+1}})">
                     <input type="text" value={{pageno+1}} name="pageno" hidden/>
                     <input value="{{ my_data }}" name="prevresult" hidden/>
                     <input value="{{ nextresult }}" name="currresult" hidden/>
+                    <input value="next" name="identifier" hidden/>
                     <input type="submit" name="next" value="Next Page">
                 </form>
             {% else %}
@@ -58,6 +75,8 @@
             {% endif %}
         </div>
     </div>
+  
+    
 {% endblock %}
 
 {% block script %}

@@ -13,6 +13,18 @@
   margin:0;
 }
 
+.blinking{
+  animation: blinkingText 1.2s infinite;
+}
+
+@keyframes blinkingText{
+	0%{		color: #000;	}
+	49%{	color: transparent;	}
+	50%{	color: transparent;	}
+	99%{	color:transparent;	}
+	100%{	color: #000;	}
+}
+
 body{
   background-color: #d3d3d3;
 }
@@ -64,11 +76,40 @@ body{
 .div-block {
   overflow: auto;
   /* float: left; */
-  padding: 10px 30px 5px 0px; /* top right bottom left */
+  padding: 0px 80px 0px 60px; /* top right bottom left */
 }
 
 span{
-  margin: 5px;
-  padding: 5px;
+  /* margin: 5px; */
+  margin: 2px 5px 2px 5px;
+  /* padding: 5px; */
+  padding: 0px 5px 2px 5px;
   display: inline-block;
 }
+
+.custom-footer-bg1 {
+  /* background: #2196f3; */
+  padding: 0px;
+  text-align: center;
+  /* color: #fff; */
+  /* box-shadow: 0 0 12px #000; */
+}
+
+/* .buttons{
+  width: 170px; 
+  display: inline-block;
+} */
+/* 
+form{
+  display: inline;
+} */
+
+/* .left-button{
+  float: left; 
+  margin: 30px 0px 20px 100px;
+}
+
+.right-button{
+  float: right; 
+  margin: 30px 40px 20px 0px;
+} */

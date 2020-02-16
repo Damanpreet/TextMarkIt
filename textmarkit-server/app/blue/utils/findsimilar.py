@@ -13,19 +13,6 @@ from collections import Counter
 def calc_cosineSimilarity(v1, v2):
     return distance.cosine(v1, v2)
 
-def similar_text(query, text, embeddings, threshold):
-    similar_para = []
-    vector_1 = np.mean([embeddings[w] for w in query if w in embeddings], axis=0)
-    # vector_1 = np.sum([embeddings[w] for w in query if w in embeddings], axis=0)
-    for k, para in text.items():
-        vector_2 = np.mean([embeddings[w] for w in para if w in embeddings], axis=0)
-        # vector_2 = np.sum([embeddings[w] for w in para if w in embeddings], axis=0)
-        print(1-calc_cosineSimilarity(vector_1, vector_2))
-        if (1-calc_cosineSimilarity(vector_1, vector_2)) >= threshold:
-            similar_para.append(k)
-    
-    return similar_para
-
 def similar_text2(query, embeddings, threshold):
     '''
         Find similarity between embeddings using cosine distance.
@@ -66,17 +53,56 @@ def similar_wmtext(query, text, threshold):
         if (model.wmdistance(query, sen)) >= threshold:
             similar_para.append(i)
 
-    print(similar_para)
-
     return similar_para
 
-def cosine_similar_topk(query, embeddings, k=5):
-    cosine_scores = []
-    for i, embed in enumerate(embeddings):
-        cosine_scores.append(1-calc_cosineSimilarity(query, embed))
+def cosine_similar_topk(query_id, query, embeddings, k=6):
+    '''
+        Find top k similar paragraphs using cosine similarity.
+    '''
+    try:
+        cosine_scores = []
+        for i, embed in enumerate(embeddings):
+            cosine_scores.append(1-calc_cosineSimilarity(query, embed))
 
-    print(cosine_scores)
+        top_ksimilar = np.array(cosine_scores).argsort()[-k:].tolist()
+        top_ksimilar = [x+1 for x in top_ksimilar]
 
-    print("Sorted: ", np.array(cosine_scores).argsort()[-k:])
+        print("removing the query id from the similarity array.")
+        print(top_ksimilar, query_id)
 
-    return np.array(cosine_scores).argsort()[-k:]
+        if query_id in top_ksimilar:
+            top_ksimilar.remove(query_id)
+            print("removed the query id. updated: ", top_ksimilar)
+        
+        return top_ksimilar
+
+    except Exception as e:
+        print("Error while finding the similarity of paragraphs.")
+        print("Error: ", e)
+        return []
+
+def cosine_similar(query_id, query, embeddings, threshold):
+    '''
+        Function to find similar paragraphs based on cosine similarity between paragraphs.
+    '''
+    try:
+        cosine_scores = []
+        for i, embed in enumerate(embeddings):
+            cosine_scores.append(1-calc_cosineSimilarity(query, embed))
+
+        print(cosine_scores)
+        top_ksimilar = np.nonzero(np.array(cosine_scores) > threshold)[0].tolist()
+        top_ksimilar = [x+1 for x in top_ksimilar]
+
+        print("removing the query id from the similarity array.")
+        print(top_ksimilar, query_id)
+
+        if query_id in top_ksimilar:
+            top_ksimilar.remove(query_id)
+            print("removed the query id. updated: ", top_ksimilar)
+
+        return top_ksimilar
+    except Exception as e:
+        print("Error while finding the similarity of paragraphs.")
+        print("Error: ", e)
+        return []

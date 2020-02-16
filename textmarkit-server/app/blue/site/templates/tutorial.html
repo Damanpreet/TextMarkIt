@@ -1,0 +1,62 @@
+<!--
+	Template from https://colorlib.com/wp/bootstrap-file-uploads/
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Home</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="{{ url_for('static', filename='js/index.js') }}"></script>
+
+<!--===============================================================================================-->
+</head>
+
+<body>
+
+	<div class="header-container-wrapper">
+		<div class="header-container">
+		  <div class="custom-header-bg">
+			<div class="page-center">
+			  <div class="logo">TextMarkIt</div>
+			  	<div class="navigation">
+					<ul>
+					<li><a href="/" class="button"><i class="fa fa-home" aria-hidden="true"></i>Homepage</a></li> 				  
+					</ul>
+			  	</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	</div>
+	  
+	 <div class="body-container-wrapper">
+		<div class="body-container">
+			<div class="page-center"> 
+				1.	Select a file by clicking "browse" or drag and drop inside the blue box.<br>
+				2.	Click the "Upload" button to upload the file.<br>
+				3.	Double click a paragraph to favoritize a paragraph.<br>
+				4.	The application will automatically highlight the similar paragraphs.<br>
+				5.	If you do not like reading a paragraph which is already highlighted, double click again to unfavoritize it.<br>
+		 	</div>
+		</div>
+	</div> 
+	  
+	<div class="footer-container-wrapper">
+		<div class="footer-container">
+			<div class="custom-footer-bg">
+				<div class="page-center">
+					<p>@Copyright 2020</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

@@ -2,8 +2,7 @@
     source: https://harishvc.com/2015/04/15/pagination-flask-mongodb/
     Paginate data
 '''
-# from flask.paginate import Paginate
-from flask import request, make_response, render_template
+from flask import request, make_response, render_template, url_for, Response
 from flask_restful import Resource
 from app.config import cfg
 from app.blue import collection
@@ -15,6 +14,8 @@ def query_data(per_page, offset):
         #             '$project': {
         #                 '_id': 0,
         #                 'text': 1,
+        #                 'type': 0,
+        #                 'para_id': 0,
         #             }
         #         },
         #         {
@@ -25,7 +26,22 @@ def query_data(per_page, offset):
         #         }
         #     ]
 
+        # pipeline = [
+        #     {'$match': {'type': 'text'}},
+        #     {'$group': {'_id': 0, 'total': {'$sum': 1}, 'text': {'$push': '$$CURRENT'}}},
+        #     {'$project': {'_id': 0, 'text': 1, 'total': 1}},
+        #     {'$unwind': '$text'},
+        #     {"$skip" : 2},
+        #     {'$limit': 2}
+        # ]
+
         query = [
+            {
+                "$match":
+                    {
+                        "type": "text"
+                    }
+            },
             {
                 "$project" : {
                         "_id" : 0,
@@ -85,8 +101,14 @@ class Paginate(Resource):
         try:
             pageno = int(request.args['pageno'])
         except:
-            print("no page in get request.") 
+            print("page no is not present in the get request.") 
             pageno=1
+        
+        try:
+            identifier = request.form['identifier']
+        except:
+            identifier = "first"
+            print("no identifier found.")
         
         print("Fetching page: ", pageno)
         per_page = cfg.PER_PAGE
@@ -98,8 +120,9 @@ class Paginate(Resource):
         nextresult = query_data(per_page, offset)
 
         headers = {'Content-Type': 'text/html'}
-        return make_response(render_template('paginate.html', my_data=currresult, prevresult={'total':0}, nextresult=nextresult, pageno=pageno), 200, headers)        
-
+        return make_response(render_template('paginate.html', my_data=currresult, prevresult={'total':0}, nextresult=nextresult, pageno=pageno, identifier=identifier), 200, headers)        
+        # destination = url_for('api.paginate')
+        # return Response(response=json.dumps({'url': destination, "my_data":currresult, "prevresult":{'total':0}, "nextresult":nextresult, "pageno":pageno, "identifier": identifier}), status=200, mimetype='text/json')
 
     def post(self):
         '''
@@ -109,34 +132,45 @@ class Paginate(Resource):
         try:
             pageno = int(request.form['pageno'])
         except:
-            print("no page in post request.") 
+            print("no page is not present in the post request.") 
             pageno=1
         
         # calculate weights in background. check later.
         per_page = cfg.PER_PAGE
         print("Fetching page: ", pageno)
 
-        if 'prevresult' not in request.form and pageno!=1:
-            offset = (pageno-2)*per_page
-            prevresult = query_data(per_page, offset)
-        else:   
-            print("Previous results found.")
+        try:
             prevresult = eval(request.form['prevresult'])
-        
-        if 'currresult' not in request.form:
-            offset = (pageno-1)*per_page
-            currresult = query_data(per_page, offset)
-        else:   
-            print("Current results found.")
-            currresult = eval(request.form['currresult']) # convert dictionary string to dictionary
+            print("Previous results found.")
+        except:
+            if pageno!=1:
+                offset = (pageno-2)*per_page
+                prevresult = query_data(per_page, offset)
+            else: prevresult={'total':0}
 
-        if 'nextresult' not in request.form:
+        try:
+            currresult = eval(request.form['currresult'])
+            print("Current results found.")
+        except:
+            offset = (pageno-1)*per_page
+            prevresult = query_data(per_page, offset)
+
+        try:            
+            nextresult = eval(request.form['nextresult'])
+            print("Next results found.")
+        except:
             offset = pageno*per_page
             nextresult = query_data(per_page, offset)
-        else:   
-            print("Next results found.")
-            nextresult = eval(request.form['nextresult'])
+        
+        try:
+            identifier = request.form['identifier']
+        except:
+            identifier = "next"
+            print("no identifier found. default is next.")
 
         headers = {'Content-Type': 'text/html'}
-        return make_response(render_template('paginate.html', my_data=currresult, prevresult=prevresult, nextresult=nextresult, pageno=pageno), 200, headers)        
-        # return make_response(render_template('paginate.html', my_data=currresult, pageno=pageno),200,headers)
+        return make_response(render_template('paginate.html', my_data=currresult, prevresult=prevresult, nextresult=nextresult, pageno=pageno, identifier=identifier), 200, headers)        
+        
+        # destination = url_for('api.paginate')
+        # return Response(response=json.dumps({'url': destination, "my_data":currresult, "prevresult":prevresult, "nextresult":nextresult, "pageno":pageno, "identifier": identifier}), status=200, mimetype='text/json')
+

@@ -1,34 +1,32 @@
-# import app.blue.utils.load_embeddings
-from app.blue.utils.preprocess import preprocess_text # for tf-idf
-import app.blue.utils.findsimilar
-import csv
-import io
+from app.blue.utils.preprocess import preprocess_text 
 from collections import defaultdict
-import app.blue.utils.tfidf_utils
+from app.blue.utils import tfidf_utils
 
-threshold = 0.2 # configuration to determine the similarity.
-def tfidf_similartext(csv_data):
+def tfidf_similartext(data, file_format):
     testdata = {}
     corpus = set()
-    c = 0 
     DF = defaultdict(lambda: 0)
     
-    csv_reader = csv.reader(csv_data, delimiter=',', quotechar='"')
-    for row in csv_reader:
-        if len(row)>0:
-            testdata[c]=preprocess_text(" ".join(row[0].split("\n"))) # preprocess the data
-            tokens = set(testdata[c].split())
-            corpus.update(tokens) # update the set of vocab
-            for w in tokens:
-                DF[w]+=1
-            c+=1
+    if file_format=='txt':               
+        for c, row in enumerate(data):
+            if len(row)>0:
+                testdata[c]=preprocess_text(" ".join(row.split("\n"))) # preprocess the data
+                tokens = set(testdata[c].split())
+                corpus.update(tokens) # update the set of vocab
+                for w in tokens:
+                    DF[w]+=1
+    elif file_format=='csv':
+        c=0
+        csv_reader = csv.reader(data, delimiter=',', quotechar='"')
+        for row in csv_reader:
+            if len(row)>0:
+                testdata[c]=preprocess_text(" ".join(row[0].split("\n"))) # preprocess the data
+                tokens = set(testdata[c].split())
+                corpus.update(tokens) # update the set of vocab
+                for w in tokens:
+                    DF[w]+=1
+                c+=1
 
     embeddings = tfidf_utils.calc_tfidf(list(testdata.values()), list(corpus), DF)
-    similarity_list = findsimilar.cosine_similar_topk(embeddings[0], embeddings[1:], 3)
-
-    print("paragraphs similar to the reference text: ",)
-    for p in similarity_list:
-        print(testdata[p])
-        print()
     
-    return similarity_list
+    return embeddings
