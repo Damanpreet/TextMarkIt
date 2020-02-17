@@ -14,6 +14,7 @@ from app.blue import collection
 import pandas as pd
 from app.config import cfg
 import codecs
+import traceback
 
 ALLOWED_EXTENSIONS = set(['csv', 'txt', 'html'])
 
@@ -40,8 +41,6 @@ class ReadFile(Resource):
     def get(self):
         print("I am in GET.")
         return redirect(url_for('site.homepage'))
-        # if request.args is None:
-        #     raise ValueError(self.EMPTY_ARGS)
         
     def post(self):
         '''
@@ -55,18 +54,18 @@ class ReadFile(Resource):
         try:
             if 'file' not in request.files:
                 flash('No file uploaded.')
-                return redirect(url_for('site.homepage'))
+                return self.redirect()
 
             rfile = request.files['file']
             fname = rfile.filename
 
             if fname == '':
                 print("api/read_file. Check file is missing.")
-                return redirect(url_for('site.homepage'))
+                return self.redirect()
 
             if not allowed_file(fname):
                 print("api/read_file. Check incorrect file extension.")
-                return redirect(url_for('site.homepage'))
+                return self.redirect()
             
             print("File type: ", rfile.content_type)
 
@@ -92,7 +91,7 @@ class ReadFile(Resource):
                 except Exception as e:
                     print(e)
                     print("Failed to insert record.")
-                    return redirect(url_for('site.pagenotfound'))
+                    return self.redirect()
 
                 # for the complete data.
                 compute_tfidf.apply_async(queue='default', args=[data, 'txt'])             
@@ -108,7 +107,8 @@ class ReadFile(Resource):
                     collection.remove({}) # remove anything that is present in the collection.
                 except:
                     print("error while removing from the collection.")
-                    return 
+                    print(traceback.format_exc())
+                    return self.redirect()
 
                 # find the tf idf vectors for the first page.
                 compute_tfidf.apply_async(queue='high_priority', priority=0, args=[data[:cfg.PER_PAGE], 'txt', 100])
@@ -126,7 +126,8 @@ class ReadFile(Resource):
                 except Exception as e:
                     print(e)
                     print("Failed to insert record.")
-                    return redirect(url_for('site.pagenotfound'))
+                    print(traceback.format_exc())
+                    return self.redirect()
                 
                 # find the tf idf vectors for the complete data.
                 compute_tfidf.apply_async(queue='high_priority', priority=0, args=[data, 'txt', 100])
@@ -139,4 +140,9 @@ class ReadFile(Resource):
         except Exception as e:
             print("oh crap! error!")
             print("Error: ", e)
-            return redirect(url_for('site.pagenotfound'))
+            print(traceback.format_exc())
+            return self.redirect()
+    
+    def redirect(self):
+        print("In redirect!")
+        return redirect(url_for('errors.handle_error'))

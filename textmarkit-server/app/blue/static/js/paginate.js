@@ -24,13 +24,15 @@ function removeBackground(click_id){
 
 // Function to find similarity on favortize and de-favoritizing a text.
 function reply_click(click_id, pageno){
+    var blink_elem = document.getElementById("blink");
     if (document.getElementById(click_id).style.backgroundColor==="rgb(0, 255, 0)"){
         removeBackground(click_id);
 
         // de-favoritize the paragraphs linked to this paragraph.
-        document.getElementById("blink").style.display="inline";
+        blink_elem.style.display="inline";
         
         $.ajax({
+            async: false, // load for the suggestions to be loaded.
             url: "/api/delete_similarity",
             type: "post",
             data: {pageno: pageno, para_id: click_id.split("-")[1]},
@@ -46,13 +48,16 @@ function reply_click(click_id, pageno){
                 console.log('Error while de-favoritizing similar text in the document.');
             }
         })
-        document.getElementById("blink").style.display="none";
+        blink_elem.style.display="none";
 
     }
     else{ // favoritize all the paragraphs linked to the current paragraph.
-        document.getElementById("blink").style.display="inline";
+        blink_elem.style.display="inline";
         
+        highlightBackground(click_id);
+
         $.ajax({
+            async: false, // load for the suggestions to be loaded.
             url: "/api/similarity",
             type: "post",
             data: {pageno: pageno, para_id: click_id.split("-")[1]},
@@ -63,13 +68,12 @@ function reply_click(click_id, pageno){
                     response.forEach(highlightBackground);
                     console.log("Highlighted similar text.");
                 }
-                highlightBackground(click_id);
             },
             error: function(response){
                 console.log('Error while highlighting similar text in the document.');
             }
         })
-        document.getElementById("blink").style.display="none";
+        blink_elem.style.display="none";
     }
 }
 
@@ -99,6 +103,7 @@ function loadSuggestions(identifier, pageno){
         // load new suggestions, if next is clicked.
         // compute similarity on the new page based on previously favoritized paragraphs.
         $.ajax({
+            async: false, // load for the suggestions to be loaded.
             url: "/api/load_suggestions",
             type: "post", 
             data: {"pageno": pageno, "identifier": identifier},
@@ -135,6 +140,7 @@ function loadSuggestions(identifier, pageno){
         // use the previously loaded suggestions.
         // send a request to find the paragraphs to be highlighted.
         $.ajax({
+            async: false, // load for the suggestions to be loaded.
             url: "/api/load_suggestions",
             type: "post", 
             data: {"pageno": pageno, "identifier": identifier},
@@ -164,4 +170,9 @@ function loadSuggestions(identifier, pageno){
             }
         });      
     }
+}
+
+// Prevent user from using the right click in the application
+document.onecontextmenu = function(event){
+    return false;
 }

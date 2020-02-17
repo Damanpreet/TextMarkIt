@@ -5,6 +5,7 @@ from pymongo import MongoClient
 from app.config import cfg
 from app.blue.utils.load_embeddings import query_embeddings
 from app.blue.utils.insert_update_similarity import check_favourites, update_similarity
+import traceback
 
 class LoadSuggestions(Resource):
     '''
@@ -87,5 +88,5 @@ class LoadSuggestions(Resource):
             return ['button-'+str(x) for x in sim_ids_page]
         except Exception as e:
             print("Error: ", e)
-            print("error! error! error!")
-            return redirect(url_for('site.pagenotfound'))
+            print(traceback.format_exc())
+            return self.redirect()

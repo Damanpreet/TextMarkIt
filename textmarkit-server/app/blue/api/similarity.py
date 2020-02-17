@@ -4,6 +4,7 @@ from app.blue.utils.findsimilar import cosine_similar
 from app.config import cfg
 from app.blue.utils.load_embeddings import query_embeddings
 from app.blue.utils.insert_update_similarity import check_similarity, insert_similarity, de_favoritize
+import traceback
 
 class Similarity(Resource):
     '''
@@ -70,15 +71,17 @@ class Similarity(Resource):
                     print("Records inserted into the database.")
                 except:
                     print("Error while inserting records.")
-
-            # print(sim_ids)
-            print(['button-'+str(x-start_id) for x in sim_ids if start_id+1<=x<=end_id])
+            
             return ['button-'+str(x-start_id) for x in sim_ids if start_id+1<=x<=end_id]
         except Exception as e:
-            import pdb; pdb.set_trace()
             print("Error: ", e)
             print("oh crap! error!")
-            return redirect(url_for('site.pagenotfound'))
+            print(traceback.format_exc())
+            return self.redirect()
+
+    def redirect(self):
+        print("In redirect!")
+        return redirect(url_for('errors.handle_error'))
 
 class DeleteSimilarity(Resource):
     '''
@@ -125,4 +128,9 @@ class DeleteSimilarity(Resource):
         except Exception as e:
             print("Error: ", e)
             print("oh crap! error!")
-            return redirect(url_for('site.pagenotfound'))
+            print(traceback.format_exc())
+            return self.redirect()
+
+    def redirect(self):
+        print("In redirect!")
+        return redirect(url_for('errors.handle_error'))
