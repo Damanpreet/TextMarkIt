@@ -66,7 +66,7 @@ h1 {
 .header-container .page-center,
 .body-container .page-center,
 .footer-container .page-center {
-  max-width: 1300px;
+  max-width: 3000px;
   margin: 0 auto;
   padding: 0 10px;
   overflow: hidden;
@@ -97,7 +97,7 @@ h1 {
 }
 .custom-header-bg {
     background: #2196F3;
-    padding: 20px 0;
+    padding: 20px 5px;
     font-family: 'Open Sans', sans-serif;
     box-shadow: 0 0 12px #000;
 }
@@ -170,7 +170,7 @@ h1 {
 }
 
 .upload {
-  padding: 0;
+  /*padding: 0;*/
   background-color: #3498db;
   background-image: 8121991;
   background-image: -webkit-linear-gradient(#4aa3df 0%, #258cd1 100%);
@@ -192,6 +192,17 @@ h1 {
   cursor: default!important;
   font-weight: normal;
   font-family: Open Sans;
+  font-size: 15px;
+  font-size: 1.5vw;
+}
+
+
+input[type=submit]{
+  font-size: large;
+  text-align: center;
+  padding: 4px 6px;
+  border: none;
+  border-radius: 4px;
 }
 
 h1 {
@@ -373,7 +384,7 @@ h1 {
 }
 
 .file-upload-filename{
-  line-height:10px;
+  line-height:20px;
   display:inline-block;
   padding:0 10px;
   color:#3fa46a;

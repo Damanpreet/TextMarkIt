@@ -24,11 +24,8 @@ def similar_text2(query, embeddings, threshold):
     '''
     similar_para = []
     for i, embed in enumerate(embeddings):
-        print(1-calc_cosineSimilarity(query, embed))
         if (1-calc_cosineSimilarity(query, embed))>=threshold:
             similar_para.append(i)
-    
-    print("similar para: ", similar_para)
 
     return similar_para
 
@@ -67,9 +64,6 @@ def cosine_similar_topk(query_id, query, embeddings, k=6):
         top_ksimilar = np.array(cosine_scores).argsort()[-k:].tolist()
         top_ksimilar = [x+1 for x in top_ksimilar]
 
-        print("removing the query id from the similarity array.")
-        print(top_ksimilar, query_id)
-
         if query_id in top_ksimilar:
             top_ksimilar.remove(query_id)
             print("removed the query id. updated: ", top_ksimilar)
@@ -88,14 +82,14 @@ def cosine_similar(query_id, query, embeddings, threshold):
     try:
         cosine_scores = []
         for i, embed in enumerate(embeddings):
+            embed = embed.reshape(1, -1)
             cosine_scores.append(1-calc_cosineSimilarity(query, embed))
 
-        print(cosine_scores)
+        print("cosine scores: ", cosine_scores)
+        print("threshold: ", threshold)
+
         top_ksimilar = np.nonzero(np.array(cosine_scores) > threshold)[0].tolist()
         top_ksimilar = [x+1 for x in top_ksimilar]
-
-        print("removing the query id from the similarity array.")
-        print(top_ksimilar, query_id)
 
         if query_id in top_ksimilar:
             top_ksimilar.remove(query_id)
@@ -106,3 +100,16 @@ def cosine_similar(query_id, query, embeddings, threshold):
         print("Error while finding the similarity of paragraphs.")
         print("Error: ", e)
         return []
+
+def compare_embeddings(psim_ids, query_embedding, updated_embedding):
+    '''
+        Function to compare embeddings.
+        Return the paragraph ids with embeddings close to the query rather than the average.
+    '''
+    similar = []
+    for i in range(psim_ids.shape[0]):
+        sim_embed = psim_ids[i].reshape(1, -1)
+        print(sim_embed.shape)
+        if (1-calc_cosineSimilarity(sim_embed, query_embedding)) > (1-calc_cosineSimilarity(sim_embed, updated_embedding)):
+            similar.append(i)
+    return similar

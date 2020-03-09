@@ -110,7 +110,7 @@ class ReadFile(Resource):
                     print(traceback.format_exc())
                     return self.redirect()
 
-                # find the tf idf vectors for the first page.
+                # find the tf-idf vectors for the first page.
                 compute_tfidf.apply_async(queue='high_priority', priority=0, args=[data[:cfg.PER_PAGE], 'txt', 100])
 
                 df=pd.DataFrame(data, columns=['text'])

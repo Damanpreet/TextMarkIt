@@ -5,12 +5,21 @@
 <head>
     <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}{% endblock %}</title>
-    {% block head %}{% endblock %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
+	<title>{% block title %}{% endblock %}</title>
+	<link rel="shortcut icon" href="#" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
+	<!-- disable the back button -->
+	<script type="text/javascript">
+		function preventBack()
+		{
+			window.history.forward();
+		}
+		setTimeout("preventBack()", 0);
+		window.onunload = function() { null };
+	</script>
+	{% block head %}{% endblock %}
 </head>
 
-<!-- to disable right click on the page. -->
 <body {% block bodyfunction %}{% endblock %}>
     <div class="header-container-wrapper">
 		<div class="header-container">
@@ -19,13 +28,16 @@
 			  <div class="logo">TextMarkIt</div>
 			  	<div class="navigation">
 					<ul>
-						<li><a href="/tutorial" class="button click-tutorial" id="click-tutorial"><i class="fas fa-book-open" aria-hidden="true"></i>Tutorial</a></li>
-						<li><a href="/contact" class="button open-contact">
+						<!-- <li><a href="/tutorial/" class="button click-tutorial" id="click-tutorial"><i class="fas fa-book-open" aria-hidden="true"></i>Tutorial</a></li> -->
+						<!-- <li><a href="/" class="button"><i class="fa fa-home" aria-hidden="true"></i>Homepage</a></li> -->
+						{% block nav %}{% endblock %}
+						<li><a href="/contact/" class="button open-contact">
 						<i class="fa fa-envelope" aria-hidden="true"></i>Contact</a></li> 
 						<!-- <i class="material-icons" aria-hidden="true">mail_outline</i>Contact</a></li>  -->
 					</ul>
+			  	</div>
 			  </div>
-			</div>
+		    <div style="text-align: center;">{% block text %}{% endblock %} </div>
 		  </div>
 		</div>
 		{% block bodyheader %}{% endblock %}

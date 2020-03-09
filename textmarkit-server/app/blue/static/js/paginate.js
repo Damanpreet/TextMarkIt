@@ -32,7 +32,7 @@ function reply_click(click_id, pageno){
         blink_elem.style.display="inline";
         
         $.ajax({
-            async: false, // load for the suggestions to be loaded.
+            // async: false, // load for the suggestions to be loaded.
             url: "/api/delete_similarity",
             type: "post",
             data: {pageno: pageno, para_id: click_id.split("-")[1]},
@@ -43,13 +43,12 @@ function reply_click(click_id, pageno){
                     response.forEach(removeBackground);
                     console.log("De-favoritized similar text.");
                 }
+                blink_elem.style.display="none";
             },
             error: function(response){
                 console.log('Error while de-favoritizing similar text in the document.');
             }
         })
-        blink_elem.style.display="none";
-
     }
     else{ // favoritize all the paragraphs linked to the current paragraph.
         blink_elem.style.display="inline";
@@ -57,7 +56,7 @@ function reply_click(click_id, pageno){
         highlightBackground(click_id);
 
         $.ajax({
-            async: false, // load for the suggestions to be loaded.
+            // async: false, // load for the suggestions to be loaded.
             url: "/api/similarity",
             type: "post",
             data: {pageno: pageno, para_id: click_id.split("-")[1]},
@@ -68,12 +67,13 @@ function reply_click(click_id, pageno){
                     response.forEach(highlightBackground);
                     console.log("Highlighted similar text.");
                 }
+                blink_elem.style.display="none";
             },
             error: function(response){
                 console.log('Error while highlighting similar text in the document.');
+                blink_elem.style.display="none";
             }
         })
-        blink_elem.style.display="none";
     }
 }
 
@@ -93,6 +93,22 @@ function collapse_elem(click_id){
     }
 }
 
+// Function to export the highlighted text in a file.
+function exportfile(){
+    $.ajax({
+        // async: false, // load for the suggestions to be loaded.
+        url: "/api/exportfile",
+        type: "post", 
+        async: false,
+        success: function(response){
+            console.log("Downloaded the file.");
+        },
+        error: function(response){
+            console.log('Error while downloading the file.');
+        }
+    });
+}
+
 // Load suggestions 
 function loadSuggestions(identifier, pageno){
     if(identifier=='next')
@@ -103,7 +119,7 @@ function loadSuggestions(identifier, pageno){
         // load new suggestions, if next is clicked.
         // compute similarity on the new page based on previously favoritized paragraphs.
         $.ajax({
-            async: false, // load for the suggestions to be loaded.
+            // async: false, // load for the suggestions to be loaded.
             url: "/api/load_suggestions",
             type: "post", 
             data: {"pageno": pageno, "identifier": identifier},
@@ -140,7 +156,7 @@ function loadSuggestions(identifier, pageno){
         // use the previously loaded suggestions.
         // send a request to find the paragraphs to be highlighted.
         $.ajax({
-            async: false, // load for the suggestions to be loaded.
+            // async: false, // load for the suggestions to be loaded.
             url: "/api/load_suggestions",
             type: "post", 
             data: {"pageno": pageno, "identifier": identifier},
@@ -176,3 +192,5 @@ function loadSuggestions(identifier, pageno){
 document.onecontextmenu = function(event){
     return false;
 }
+
+

@@ -9,6 +9,7 @@ from app.blue import collection
 import json
 import traceback
 
+
 def query_data(per_page, offset):
     try:        
         query = [
@@ -53,6 +54,7 @@ def query_data(per_page, offset):
         return results
     except:
         print("Error connecting to database")
+
 
 class Paginate(Resource):
     '''
@@ -152,3 +154,5 @@ class Paginate(Resource):
     def redirect(self):
         print("In redirect!")
         return redirect(url_for('errors.handle_error'))
+
+        

@@ -5,23 +5,34 @@
     "View File"
 {% endblock %}
 
+{% block nav %}
+    <li><a href="{{ url_for('api.exportfile') }}" class="button"><i class="fas fa-file-export"></i>Export</a></li> 
+    <li><a href="/" class="button"><i class="fa fa-home" aria-hidden="true"></i>Homepage</a></li> 
+{% endblock %}
+
 {% block head %} 
     <meta charset="utf-8">
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}"> -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/paginate.css') }}">
-    <!-- <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script> -->
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-{% endblock %}
-
-{% block bodyheader %}
-    <span id="blink" class="blinking" style="display: none;"> Loading suggestions. </span>
 {% endblock %}
 
 {% block bodyfunction %}
     onload = "loadSuggestions('{{identifier}}', {{pageno}})" oncontextmenu="return false"
+{% endblock %}
+
+{% block text %}
+    <br>
+    <div class="tutorial">
+        Please double click a paragraph to favoritize or unfavoritize the text. 
+        The application will suggest similar paragraphs based on your selection.
+    </div>
+{% endblock %}
+
+{% block bodyheader %}
+    <span id="blink" class="blinking" style="display: none;"> Loading suggestions. </span>
 {% endblock %}
 
 {% block body %}

@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-# from app import app
+from app.blue import collection
 from flask import render_template
 from app.blue.utils.submit_message import submit_msg
 
@@ -7,8 +7,13 @@ mod = Blueprint('site', __name__, template_folder='templates')
 
 @mod.route('/')
 def homepage():
-    # list_example = ['Alvin', 'Simon', 'Theodore']
-    # return render_template('base1.html', list_example=list_example)
+    try:
+        collection.remove({}) 
+        print("Records deleted from the database.")
+    except Exception as e:
+        print(e)
+        print("Failed to insert record.")
+        return self.redirect()
     return render_template('index.html')
 
 @mod.route('/contact/')

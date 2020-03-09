@@ -6,6 +6,7 @@ from app.blue.api.read_file import ReadFile
 from app.blue.api.paginate import Paginate
 from app.blue.api.similarity import Similarity, DeleteSimilarity
 from app.blue.api.load_suggestions import LoadSuggestions
+from app.blue.api.exportfile import ExportFile
 
 api_bp = Blueprint('api', __name__)
 api = Api(api_bp)
@@ -16,3 +17,4 @@ api.add_resource(Paginate, '/paginate')
 api.add_resource(Similarity, '/similarity')
 api.add_resource(DeleteSimilarity, '/delete_similarity')
 api.add_resource(LoadSuggestions, '/load_suggestions')
+api.add_resource(ExportFile, '/exportfile')

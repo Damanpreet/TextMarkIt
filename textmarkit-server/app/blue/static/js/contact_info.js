@@ -1,4 +1,3 @@
-
 // Function to validate the form fields.
 function validateForm() {
   var txtEmail = document.forms["submit_msg"]["txtEmail"].value;

@@ -75,41 +75,28 @@ body{
 
 .div-block {
   overflow: auto;
-  /* float: left; */
-  padding: 0px 80px 0px 60px; /* top right bottom left */
+  padding: 1% 12% 1% 12%; /* top right bottom left */
 }
 
 span{
-  /* margin: 5px; */
   margin: 2px 5px 2px 5px;
-  /* padding: 5px; */
   padding: 0px 5px 2px 5px;
   display: inline-block;
 }
 
 .custom-footer-bg1 {
-  /* background: #2196f3; */
   padding: 0px;
   text-align: center;
-  /* color: #fff; */
-  /* box-shadow: 0 0 12px #000; */
 }
 
-/* .buttons{
-  width: 170px; 
+.tutorial{
+  align-content: center; 
   display: inline-block;
-} */
-/* 
-form{
-  display: inline;
-} */
-
-/* .left-button{
-  float: left; 
-  margin: 30px 0px 20px 100px;
+  font-size: medium;
+  text-align: center;
+  align-items: center;
 }
 
-.right-button{
-  float: right; 
-  margin: 30px 40px 20px 0px;
-} */
+.custom-header-bg{
+  padding: 20px 5px 10px 5px;
+}

@@ -27,9 +27,11 @@ $('#fileElem').on('change',function(){
   
   if (extensions.includes(ext)){
     document.getElementById('file-upload-filename').innerText = fileName;//.split('\\').pop().split('/').pop();
+    document.getElementById('file-upload-btn').disabled = false;
   }
   else{
     document.getElementById('file-upload-filename').innerText = "Please upload html/txt file";
+    document.getElementById('file-upload-btn').disabled = true;
   }
 });
 
@@ -65,3 +67,11 @@ var dropHandlerSet = {
 }
 
 $(".upload").on(dropHandlerSet);
+
+window.addEventListener("dragover", function(event){
+  event.preventDefault();
+}, false);
+
+window.addEventListener("drop", function(event){
+  event.preventDefault();
+}, false);

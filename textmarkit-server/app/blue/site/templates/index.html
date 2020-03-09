@@ -9,6 +9,11 @@
     "Home"
 {% endblock %}
 
+{% block nav %}
+	<li><a href="/tutorial/" class="button click-tutorial" id="click-tutorial"><i class="fas fa-book-open" aria-hidden="true"></i>Tutorial</a></li>
+{% endblock %}
+
+
 {% block head %} 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -49,7 +54,7 @@
 								to begin the upload
 							</p>
 							<output id="file-upload-filename">No files chosen...</output>
-							<input type = "submit" value="Upload" name="upload_submit"/>
+							<input type = "submit" value="Upload" name="upload_submit" id="file-upload-btn" disabled/>
 						</div>
 					</form>
 
